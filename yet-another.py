@@ -81,7 +81,8 @@ for turn_no in range(0,5):
     right_ans = screen_order.index(1) + 1
     #print('back with this order ' + str(screen_order))
     #print('right answer is in position '+ str(right_ans))
-    # go get answers
+    # go get answers lots of stuff in this call but it needs
+    # all of it
     correct = get_user_ans(rand_pic, right_ans, questions, screen_order)
     if correct:
         print('got it')
