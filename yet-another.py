@@ -4,7 +4,7 @@ import random
 list_file = 'qna_pool.csv'
 file_error = False
 row_count = 0
-
+# ----------- START GAME TWO CODE --------------
 def get_file(list_file):
     global row_count
     global file_error
@@ -85,19 +85,24 @@ q_pics = pick_some(5, 0, 14)
 
 
 
+def take_turns():
+    for turn_no in range(0,5):
+        # put up the questions
+        rand_pic = q_pics[0][turn_no]
+        # rand_pic points to the index of the question 0-14
+        screen_order = q_to_screen(rand_pic, questions)
+        right_ans = screen_order.index(1) + 1
+        #print('back with this order ' + str(screen_order))
+        #print('right answer is in position '+ str(right_ans))
+        # go get answers lots of stuff in this call but it needs
+        # all of it
+        correct = get_user_ans(rand_pic, right_ans, questions, screen_order)
+        if correct:
+            print('got it')
+        else:
+            print('no such luck')
+
+# ----------- END GAME 2 CODE ----------------
+
 turn_no = 0
-for turn_no in range(0,5):
-    # put up the questions
-    rand_pic = q_pics[0][turn_no]
-    # rand_pic points to the index of the question 0-14
-    screen_order = q_to_screen(rand_pic, questions)
-    right_ans = screen_order.index(1) + 1
-    #print('back with this order ' + str(screen_order))
-    #print('right answer is in position '+ str(right_ans))
-    # go get answers lots of stuff in this call but it needs
-    # all of it
-    correct = get_user_ans(rand_pic, right_ans, questions, screen_order)
-    if correct:
-        print('got it')
-    else:
-        print('no such luck')
+take_turns()
