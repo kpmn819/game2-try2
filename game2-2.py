@@ -42,5 +42,5 @@ print('final temp2 ' +temp2)
 print(' see if we get anything ' + str(q_list[0][0]))
 print(str(num_items))
 #back to a list
-fnllist = str(q_list[0][0]).split("")
+fnllist = str(q_list[0][0]).split()
 print(fnllist)

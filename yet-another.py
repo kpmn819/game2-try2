@@ -2,27 +2,39 @@ import csv
 import random
 
 list_file = 'qna_pool.csv'
+file_error = False
+row_count = 0
 
 def get_file(list_file):
-    ''' call with file and get back list of lists'''
-    with open(list_file) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        rowlist = []
-        questions_list = []
-        line_count = 0
-        for row in csv_reader:
-            if line_count > 0:
-                # avoids the header line
-                rowlist = [row[0]] # initalizes the list
-                rowlist.append(row[1])
-                rowlist.append(row[2])
-                rowlist.append(row[3])
-                questions_list.append(rowlist)
-                # this is a 0 based list of lists
-                # access questions_list[q# - 1][column]
-            line_count += 1
-        print(f'Processed {line_count} lines.')
-        return [questions_list]
+    global row_count
+    global file_error
+    try:
+        ''' call with file and get back list of lists'''
+        with open(list_file) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            rowlist = []
+            questions_list = []
+            line_count = 0
+            for row in csv_reader:
+                if line_count > 0:
+                    # avoids the header line
+                    rowlist = [row[0]] # initalizes the list
+                    rowlist.append(row[1])
+                    rowlist.append(row[2])
+                    rowlist.append(row[3])
+                    questions_list.append(rowlist)
+                    # this is a 0 based list of lists
+                    # access questions_list[q# - 1][column]
+                line_count += 1
+            print(f'Processed {line_count} lines.')
+            row_count = line_count - 1
+            return [questions_list]
+    except FileNotFoundError:
+        print('qna_pool.csv data file not found')
+        # print message on screen
+        file_error = True
+        return file_error
+
 
 def pick_some(qpicks,rstart,rend):
     '''takes a number and returns list of randoms nums in a range'''
@@ -64,6 +76,7 @@ def get_user_ans(rand_pic, right_ans, questions, screen_order):
 
 # get the list of the list of all questions
 [questions] = get_file(list_file)
+print('there are ' + str(row_count) + ' rows')
 # pick 5 questions out of 15
 # this is a list of questions to be asked
 # just need to do it once per game
