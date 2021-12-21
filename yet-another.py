@@ -4,6 +4,8 @@ import random
 list_file = 'qna_pool.csv'
 file_error = False
 row_count = 0
+donation = False
+
 # ----------- START GAME TWO CODE --------------
 def get_file(list_file):
     global row_count
@@ -33,7 +35,7 @@ def get_file(list_file):
         print('qna_pool.csv data file not found')
         # print message on screen
         file_error = True
-        return file_error
+        
 
 
 def pick_some(qpicks,rstart,rend):
@@ -74,22 +76,13 @@ def get_user_ans(rand_pic, right_ans, questions, screen_order):
         correct = False
     return correct
 
-# get the list of the list of all questions
-[questions] = get_file(list_file)
-print('there are ' + str(row_count) + ' rows')
-# pick 5 questions out of 15
-# this is a list of questions to be asked
-# just need to do it once per game
-q_pics = pick_some(5, 0, 14)
-# whatever is in the 1 slot is correct pick
-
-
-
 def take_turns():
+    right_count = 0
+    
     for turn_no in range(0,5):
         # put up the questions
         rand_pic = q_pics[0][turn_no]
-        # rand_pic points to the index of the question 0-14
+        # rand_pic points to the index of the question 0 to row_count -1
         screen_order = q_to_screen(rand_pic, questions)
         right_ans = screen_order.index(1) + 1
         #print('back with this order ' + str(screen_order))
@@ -99,10 +92,42 @@ def take_turns():
         correct = get_user_ans(rand_pic, right_ans, questions, screen_order)
         if correct:
             print('got it')
+            right_count += 1
         else:
             print('no such luck')
+    return right_count        
+
+def donation_start():
+    pass
+
+def free_start():
+    pass
 
 # ----------- END GAME 2 CODE ----------------
 
+# ------------ START RUN ONCE ---------
+# get the list of the list of all questions
+try:
+    [questions] = get_file(list_file)
+except:
+    print('FILE IS MISSING')
+    #once this is inside a loop ADD BREAK 
+    
+
+print('there are ' + str(row_count) + ' rows')
+# pick 5 questions out of how many are in file
+# this is a list of questions to be asked
+# just need to do it once per game
+q_pics = pick_some(5, 0, row_count -1)
+# whatever is in the 1 slot is correct pick
 turn_no = 0
-take_turns()
+# ------ END RUN ONCE --------------
+
+# make it go
+# at start donation or free play?
+if donation:
+    donation_start()
+else:
+    free_start()
+final_score = take_turns()
+print('Your final score is '+str(final_score)+' right and '+str(5 -final_score)+ ' wrong')
